@@ -158,37 +158,34 @@ The constructs of the language can thus be divided into two kinds: **1)** expres
 Test blah blah. Table:
 
 \begin{footnotesize}
-\begin{center}
-   \begin{tabular}{ | l l l | }
-      \hline
-​      \textbf{Expression}        & \textbf{Meaning} & \textbf{Associativity} \\
-​      \hline
+   \begin{tabular}{ | l l l | } \hline
+​      \textbf{Expression}        & \textbf{Meaning} & \textbf{Associativity} \\ \hline
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ​      \textit{literal}           & A \textit{string}, \textit{number}, \textit{boolean}, \textit{percentage}, or \textit{field name}  &       \\
-​      \textit{variable}          & A variable name                                                                                    &       \\
-​      \hline
-​      \texttt{e1 grouped by e2}  & Add a group to a grouping                                                                                & left  \\
-​      \texttt{e1 where e2}       & Filter a grouping                                                                                    & left  \\
-​      \hline
-​      \texttt{e1 of e2}          & \textit{map} each position in a grouping into a field value                                                             & none  \\
-​      \hline
+​      \textit{variable}          & A variable name                                                                                    &       \\ \hline
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+​      \texttt{e1 grouped by e2}  & Add a group to a grouping                                                                           & left  \\
+​      \texttt{e1 where e2}       & Filter a grouping                                                                                   & left  \\ \hline
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+​      \texttt{e1 of e2}          & \textit{map} each position in a grouping into a field value                                         & none  \\ \hline
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ​      \texttt{count e}           & Count the number of groups in a grouping   &        \\
 ​      \texttt{sum e}             & \textit{Sum} of field values in a grouping        &        \\
 ​      \texttt{average e}         & \textit{Average} of field values in a grouping    &        \\
 ​      \texttt{minimum e}         & \textit{Maximum} of field values in a grouping      &        \\
-​      \texttt{maximum e}         & \textit{Minimum} of field values in a grouping      &        \\
-​      \hline
-​      \texttt{e1 relative to e2} & Relative comparison          & left    \\
-​      \hline
+​      \texttt{maximum e}         & \textit{Minimum} of field values in a grouping      &        \\ \hline
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+​      \texttt{e1 relative to e2} & Relative comparison          & left    \\ \hline
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ​      \texttt{e1 > e2}           & Greater than                 & none    \\
 ​      \texttt{e1 < e2}           & Less than                    & none    \\
 ​      \texttt{e1 >= e2}          & Greater than or equal        & none    \\
-​      \texttt{e1 <= e2}          & Less than or equal           & none    \\
-​      \hline
+​      \texttt{e1 <= e2}          & Less than or equal           & none    \\ \hline
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 ​      \texttt{e1 == e2}          & Equals                        & none    \\
-​      \texttt{e1 != e2}          & Does not equal                    & none    \\
-​      \hline
+​      \texttt{e1 != e2}          & Does not equal                    & none    \\ \hline
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
    \end{tabular}
-\end{center}
 \end{footnotesize}
 
 
@@ -319,43 +316,31 @@ This section describes how a portfolio compliance rule is evaluated to a boolean
 The table below summarizes the type of the input argument(s) and the result type of the prefix and infix operators described in [@TODO].
 
 \begin{footnotesize}
-\begin{center}
-   \begin{tabular}{ | l l l | }
-      \hline
-      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-      \textbf{Expression}        & \textbf{Argument type(s)}           & \textbf{Result type}         \\
-      \hline
-      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+   \begin{tabular}{ | l l l | } \hline
+      \textbf{Expression}        & \textbf{Argument type(s)}           & \textbf{Result type}         \\ \hline
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       \texttt{e1 grouped by e2}  & \textit{position-grouping}, \textit{field name}          & \textit{position-grouping}   \\
-      \texttt{e1 where e2}       & \textit{position-grouping}, \textit{comparison}          & \textit{position-grouping}   \\
-      \hline
-      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-      \texttt{e1 of e2}          & \textit{field name}, \textit{position-grouping}          & \textit{field value-grouping}  \\
-      \hline
-      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \texttt{e1 where e2}       & \textit{position-grouping}, \textit{comparison}          & \textit{position-grouping}   \\ \hline
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \texttt{e1 of e2}          & \textit{field name}, \textit{position-grouping}          & \textit{field value-grouping}  \\ \hline
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       \texttt{count e}           & \textit{grouping}                               & \textit{number}       \\
       \texttt{sum e}             & \textit{number-grouping}                        & \textit{number}       \\
       \texttt{average e}         & \textit{number-grouping}                        & \textit{number}       \\
       \texttt{minimum e}         & \textit{number-grouping}                        & \textit{number}       \\
-      \texttt{maximum e}         & \textit{number-grouping}                        & \textit{number}       \\
-      \hline
-      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-      \texttt{e1 relative to e2} & \textit{number}, \textit{number} or \textit{percentage}, \textit{percentage}     & \textit{percentage}    \\
-      \hline
-      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \texttt{maximum e}         & \textit{number-grouping}                        & \textit{number}       \\ \hline
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \texttt{e1 relative to e2} & \textit{number}, \textit{number} or \textit{percentage}, \textit{percentage}     & \textit{percentage}    \\ \hline
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       \texttt{e1 > e2}           & \textit{number}, \textit{number} or \textit{percentage}, \textit{percentage}     & \textit{boolean}    \\
       \texttt{e1 < e2}           & \textit{number}, \textit{number} or \textit{percentage}, \textit{percentage}     & \textit{boolean}    \\
       \texttt{e1 >= e2}          & \textit{number}, \textit{number} or \textit{percentage}, \textit{percentage}     & \textit{boolean}    \\
-      \texttt{e1 <= e2}          & \textit{number}, \textit{number} or \textit{percentage}, \textit{percentage}     & \textit{boolean}    \\
-      \hline
-      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \texttt{e1 <= e2}          & \textit{number}, \textit{number} or \textit{percentage}, \textit{percentage}     & \textit{boolean}    \\ \hline
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
       \texttt{e1 == e2}          & \textit{string}, \textit{string}                                                 & \textit{boolean}    \\
-      \texttt{e1 != e2}          & \textit{string}, \textit{string}                                                 & \textit{boolean}    \\
-      \hline
-      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
+      \texttt{e1 != e2}          & \textit{string}, \textit{string}                                                 & \textit{boolean}    \\ \hline
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
    \end{tabular}
-\end{center}
 \end{footnotesize}
 
 

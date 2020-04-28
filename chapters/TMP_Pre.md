@@ -16,13 +16,14 @@ SimCorp is a *financial software*-company, whose customers include asset manager
 Overall, SimCorp's current software solution for portfolio compliance rules works well, but there is room for improvement:
 
 * From a usability point-of-view, some users prefer being able to type in rules using the keyboard — including e.g. auto-completion. SimCorp's current solution does not easily allow for adding this.
-* When writing compliance rules using SimCorp's software, the rule author can make use of so-called *rule fragments*. A rule fragment is a small, re-usable rule condition. By combining together many of these  conditions, complex compliance rules can be created without having to write the entire rule from scratch. SimCorp's intention is to promote the reuse of rule fragments across compliance rules. In reality however, only few fragments are used in more than one rule. 
-* Conceptually, fragments are very powerful, but also difficult to master. They allow for many logical constructions that do not make sense in a business context. SimCorp would like a more user-friendly solution with a less steep learning curve.
+* When writing compliance rules using SimCorp's software, the rule author can make use of so-called *rule fragments*. A rule fragment is a small, re-usable rule condition. By combining together many of these  conditions, complex compliance rules can be created without having to write the entire rule from scratch.
+  * SimCorp's intention is to promote the reuse of rule fragments across compliance rules. In reality however, only few fragments are used in more than one rule. 
+  * Conceptually, fragments are very powerful, but also difficult to master. They allow for many logical constructions that do not make sense in a business context. SimCorp would like a more user-friendly solution with a less steep learning curve.
 
 
 # Scope
 
-The scope of this project is to design, and implement in Haskell, a domain-specific language (DSL) for expressing portfolio compliance rules. The DSL must support at least the six rules listed in [Compliance rule examples](#compliance-rule-examples), which are representative of the more complex rules in use, but we do not strive to cover all rules used in practice. In addition, the DSL will use concepts from *functional programming*, with the aim of promoting the re-use of rule fragments through maximizing *composability* (see \ref{composability}).
+The scope of this project is to design, and implement in Haskell, a domain-specific language (DSL) for expressing portfolio compliance rules. The DSL must support at least the six rules listed in [Compliance rule examples](#compliance-rule-examples), which are representative of the more complex rules in use, but we do not strive to cover all rules used in practice. In addition, the DSL will use concepts from *functional programming*, with the aim of promoting the re-use of rule fragments through maximizing *composability* (see @sec:composability).
 
 # Background
 
@@ -30,7 +31,7 @@ The scope of this project is to design, and implement in Haskell, a domain-speci
 
 * Law: e.g., UCITS
 
-### Terms
+### Terminology
 
 #### Security
 
@@ -46,7 +47,7 @@ The term *portfolio* refers to a *set of positions*. A particular portfolio may 
 
 ### Compliance rule examples
 
-In this section six different compliance rules are presented (REF: [David's rules](#a.1)). Common to all rules is that a position has one or more properties. A property is identified by a name — such as *value*, *issuer*, and *security type* — and an associated value.
+In this section, six different compliance rules are presented. Common to all rules is that a position has one or more properties. A property is identified by a name — e.g. *value*, *issuer*, or *security type* — and an associated value — e.g., respectively, $1000.50$, `"Tesla"`, and `"Bond"`.
 
 #### Rule I
 
@@ -104,20 +105,26 @@ First, filter off domestic positions, in order to obtain only foreign-country po
 
 ## Domain-specific languages
 
-A domain-specific language (DSL) is a programming language that is tailored to model a specific business domain. DSLs stand in contrast to *general-purpose* programming languages (GPPL), which are designed to model *any* business domain. DSLs are thus less expressive than general purpose languages, in the sense that they intentionally restrict the domain that can be modelled using the language.
+A domain-specific language (DSL) is a programming language that is tailored to model a specific business domain. A DSL stands in contrast to a *general-purpose* programming language (GPPL), which is designed to model *any* business domain. A DSL is thus less expressive than a general-purpose languages, in the sense that a DSL intentionally restricts the domain that can be modelled using the language.
+
+DSL examples include: HTML (*Hypertext Markup Language*) for describing the structure of a web page; CSS (*Cascading Style Sheets*) for describing the presentation of a web page (e.g., layout, colors, fonts); and SQL (*Structured Query Language*) for describing queries against a table-based database.
 
 ### Purpose
 
-**TODO:**
+Due to the restriction in what a DSL must be capable of modeling, it is possible to design a DSL that is significantly simpler than a GPPL. And while this comes with the disadvantage of reducing what is possible to express using the DSL, it also comes with the advantage of a reduction in the time/effort needed to learn it. Consequently, if the goal is to get experts, of a particular business domain, to quickly/easily express their domain knowledge in code, which can be executed by a computer, a simple DSL can be a helpful tool.
 
-* Domain experts can learn a simple DSL quicker than it takes them to learn a GPPL
-* This enables them to more quickly learn how to express domain knowledge in code
+### Terminology
 
-### Terms
+#### *Embedded* versus *external*
+
+**TODO**
+
 
 #### *Abstract* versus *concrete* syntax
 
-**TODO:** model versus a representation of that model
+The *abstract syntax* of a programming language (whether domain-specific or general-purpose) is a data structure that can describe any expression in that language. As an example, let us consider a very simple DSL which describes multiplication and addition of integers. This language has two *data constructors*: $Mul$ and $Add$ which describe multiplication and addition, respectively, and which both take two arguments. An argument may be either an integer or another expression — that is, either a multiplication or addition or a combination hereof. The abstract syntax $Add\;3\;5$ thus describes three added to five, $Mul\;2\;7$ describes two multiplied by seven, and $Mul\;4\;(Add\;1\;6)$ describes multiplying by four the result of adding one to six. This syntax is called "abstract" because it refers to abstract objects. The objects $Add$ and $Mul$ are abstract in the sense that $Add$ and $Mul$ are simply *names* that we use to refer to the abstract operation of addition and multiplication, respectively — we could just as well refer to these objects as $A$ and $M$.
+
+The *concrete syntax* of a programming language is **a representation** of the abstract syntax. For example, a common representation of $Mul\;4\;(Add\;1\;6)$ — i.e. multiplying by four the result of adding one to six — is `4 * (1 + 6)`. But we may also refer to this same operation by using the symbol `×` instead of `*` and removing the spaces: `4×(1+6)` — both refer to exactly the same thing.
 
 #### *Printer* versus *parser*
 
@@ -126,9 +133,7 @@ A domain-specific language (DSL) is a programming language that is tailored to m
 * converting between abstract and concrete syntax
 * a parser can fail, a printer cannot
 
-#### *Embedded* versus *external*
 
-**TODO**
 
 ### Benefits
 
@@ -142,7 +147,7 @@ A domain-specific language (DSL) is a programming language that is tailored to m
 
 ### Drawbacks
 
-**TODO**
+* User needs to learn a new language, including both syntax and semantics
 
 ## Functional programming
 
@@ -152,7 +157,7 @@ A domain-specific language (DSL) is a programming language that is tailored to m
 
 ### Advantages
 
-#### Composability
+#### Composability {#sec:composability}
 TODO
 
 #### Higher-order functions

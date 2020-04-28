@@ -5,6 +5,7 @@ TEX_FILE="report.tex"
 
 pandoc --standalone --from markdown \
        -F pandoc-tablenos -F pandoc-crossref -F pandoc-citeproc --bibliography=bibliography.bib \
+       -M chapters \
        --template templates/eisvogel.latex --listings --toc -V toc-title='Table of contents' \
        -V linkcolor:blue -V mainfont="Times New Roman" -V monofont="DejaVu Sans Mono" -V sansfont="Arial" \
        -V 'sansfontoptions:LetterSpace=4.0' --number-sections --pdf-engine=xelatex -V titlepage \
