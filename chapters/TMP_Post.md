@@ -57,10 +57,6 @@ Visualisering af den underdel af det abstrakte syntaks som beskriver grupperinge
 # Conclusion
 TODO
 
-# References
-
-[1] Peter Buneman, Leonid Libkin, Dan Suciu, Val Tannen, and Limsoon Wong. 1994. *Comprehension syntax*. SIGMOD Rec. 23, 1 (March 1994), 87–96. DOI:https://doi.org/10.1145/181550.181564
-
 # Appendix
 
 ## A.1

@@ -4,45 +4,31 @@ author: Rune K. Svendsen
 date: "2020-05-15"
 keywords: [Portfolio compliance, DSL]
 lang: "en"
+reference-section-title: "References"
 ...
 
 # Introduction
 
-TODO. Nævn:
+Companies/institutions that invest money on behalf of customers — hereafter referred to as *institutional investors* — are subject to laws that govern what they are allowed to invest in. For example — in order to reduce the risk of monetary loss for pension holders — a law might require that a pension fund invest no more than a certain fraction of its funds in a single business sector (e.g. *agriculture*, *manufacturing*, or *construction*). A law of this nature is called a *portfolio compliance rule* because it defines a rule that a given *portfolio* (the set of investments owned by the institutional investor) must comply with. A large number of portfolio compliance rules apply to institutional investors, who must keep track of whether or not their investments are in compliance with these rules.
 
-* SimCorp's situation
-  * Mange regler og porteføljer
-* "Comprehension syntax"-sprog
+SimCorp is a *financial software*-company, whose customers include asset managers, banks, national banks, pension funds, sovereign wealth funds and insurance companies[@SimCorpFactSheet]. Their core software product *SimCorp Dimension* includes — among many other features — the ability to automatically check portfolios against a set of compliance rules. This enables institutional investors to spend less time dealing with portfolio compliance rules, as computer software can automatically perform this task of checking portfolios for compliance with rules and regulations.
 
-## Motivation
+Overall, SimCorp's current software solution for portfolio compliance rules works well, but there is room for improvement:
 
-**TODO:** integrer følgende udkast fra Per Vester omkring SimCorp's motivation for a deltage i projektet:
+* From a usability point-of-view, some users prefer being able to type in rules using the keyboard — including e.g. auto-completion. SimCorp's current solution does not easily allow for adding this.
+* When writing compliance rules using SimCorp's software, the rule author can make use of so-called *rule fragments*. A rule fragment is a small, re-usable rule condition. By combining together many of these  conditions, complex compliance rules can be created without having to write the entire rule from scratch. SimCorp's intention is to promote the reuse of rule fragments across compliance rules. In reality however, only few fragments are used in more than one rule. 
+* Conceptually, fragments are very powerful, but also difficult to master. They allow for many logical constructions that do not make sense in a business context. SimCorp would like a more user-friendly solution with a less steep learning curve.
 
-***Our Motivation to Participate***
 
-*The current way to write complex compliance rules was designed around ten years ago. Overall it works well, but experience has shown us that there is room for improvement.*
+# Scope
 
-*In terms of specific challenges in the current implementation, these are the main ones:*
-
-* *Rule fragments are written separately from the compliance rules that use them. The intention is to promote the reuse of fragments across rules. In reality however, only few fragments are used in more than one rule. This leads to a cumbersome process, both upon initial creation and subsequent maintenance.*
-
-* *Conceptually, fragments are very powerful, but also difficult to master. They allow for a lot of logical constructions that do not make sense in a business context. A more user-friendly solution with a less steep learning curve will be advantageous.*
-
-* *From a usability point-of-view, some users prefer to be able to type in rules using the keyboard including e.g. auto completion. Our current solution does not easily allow for adding this.*
-
-*The team of testers, developers and product management behind Compliance Manager has been very stable throughout the years. We see this as a great opportunity to get fresh eyes on our solution that can give us new inspiration and let us benefit from some of the latest technological advancements.*
-
-*Finally, we see the collaboration as a good way to get more ITU students to see SimCorp as an attractive place to work after graduation.*
-
-## Scope
-
-The scope of the project is to design, and implement in Haskell, a domain-specific language (DSL) for expressing portfolio compliance rules. The basis for this DSL is the *Comprehension syntax*-language[1]. The DSL must support at least the six rules listed in [Compliance rule examples](#compliance-rule-examples), which are representative of the more complex rules in use, but we do not strive to cover all rules used in practice.
+The scope of this project is to design, and implement in Haskell, a domain-specific language (DSL) for expressing portfolio compliance rules. The DSL must support at least the six rules listed in [Compliance rule examples](#compliance-rule-examples), which are representative of the more complex rules in use, but we do not strive to cover all rules used in practice. In addition, the DSL will use concepts from *functional programming*, with the aim of promoting the re-use of rule fragments through maximizing *composability* (see \ref{composability}).
 
 # Background
 
 ## Portfolio compliance
 
-Companies/institutions that invest money on behalf of customers — hereafter referred to as *institutional investors* — are subject to laws that govern what they are allowed to invest in. For example, a law might require that a pension fund invest no more than a certain fraction of its funds in the bonds of companies belonging to a single business sector — e.g. *the value of bonds from companies in agriculture may not exceed 5% of the value of total assets*. A large number of these *portfolio compliance rules* apply to institutional investors, who must keep track of whether or not their investments comply with these rules.
+* Law: e.g., UCITS
 
 ### Terms
 
@@ -118,13 +104,13 @@ First, filter off domestic positions, in order to obtain only foreign-country po
 
 ## Domain-specific languages
 
-A domain-specific language (DSL) is a programming language that is tailored to model a specific business domain. DSLs stand in contrast to *general-purpose* programming languages (GPL), which are designed to model *any* business domain. DSLs are thus less expressive than general purpose languages, in the sense that they intentionally restrict the domain that can be modelled using the language.
+A domain-specific language (DSL) is a programming language that is tailored to model a specific business domain. DSLs stand in contrast to *general-purpose* programming languages (GPPL), which are designed to model *any* business domain. DSLs are thus less expressive than general purpose languages, in the sense that they intentionally restrict the domain that can be modelled using the language.
 
 ### Purpose
 
 **TODO:**
 
-* Domain experts can learn a simple DSL quicker than it takes them to learn a GPL
+* Domain experts can learn a simple DSL quicker than it takes them to learn a GPPL
 * This enables them to more quickly learn how to express domain knowledge in code
 
 ### Terms
@@ -150,20 +136,33 @@ A domain-specific language (DSL) is a programming language that is tailored to m
 * Separation of the *language* from the *models* described using the language allows different interpretations of the same model:
   * *Formatting* the model for ease of readability, by printing out using syntax highlighting and standardized formatting
   * *Visualizing* the model, i.e. producing an image that represents the model
-  * *Perform static checks* on the model, i.e. checking the model for inconsistencies and errors that may not be possible if the model were expressed in a GPL
-  * Different *implementations* of programs that evaluate the model — as opposed to being tied to the GPL in which the model is formulated
-    * e.g. one written in C for performance, and another implemented in Haskell for correctness
+  * *Perform static checks* on the model, i.e. checking the model for inconsistencies and errors that may not be possible if the model were expressed in a GPPL
+  * Different *implementations* of programs that evaluate the model — as opposed to being tied to the GPPL in which the model is formulated
+    * e.g. one written in C for performance, and another implemented in Haskell for correctness/memory safety
 
 ### Drawbacks
 
 **TODO**
 
-## Comprehension syntax
+## Functional programming
 
-### What is it?
+### Overview
 
-**TODO:** Operations "naturally associated with" *collection types* (i.e., lists, sets, multisets). Operations:
+**TODO**
 
-* Iterate over collection
-* Conditional execution
-* Pattern matching (*where x == y*)
+### Advantages
+
+#### Composability
+TODO
+
+#### Higher-order functions
+TODO
+
+#### Immutability
+TODO
+
+### Disadvantages
+
+* Speed
+  * Lack of in-place updates (mutability)
+  * Garbage collection

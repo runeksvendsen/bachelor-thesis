@@ -105,7 +105,7 @@ The DSL supports the following operations
 
 #### Grouping {#syntax-grouping}
 
-A grouping/filtering operation takes as input an existing grouping and either groups it (by a property name) or removes positions based on a condition. For example, `Portfolio grouped by Country where sum .Value of Country relative to Portfolio >= 10%` first groups a portfolio by country and then removes the countries whose value relative to the portfolio is less than 10%. 
+A grouping/filtering operation takes as input an existing grouping and either groups it (by a property name) or removes positions based on a condition. For example, `Portfolio grouped by Country where sum .Value of Country relative to Portfolio >= 10%` first groups a portfolio by country and then removes the countries whose value relative to the portfolio is less than 10%.
 
 #### Calculation on a grouping
 
@@ -113,7 +113,7 @@ A calculation transforms a grouping into a number. For example: `sum .Value of P
 
 A calculation may be a reduction of a particular property of all the positions in a grouping to a value (*sum/average/minimum/maximum*). For example, the *sum* calculation using the `Exposure` property, performed on some grouping, takes the value of the `Exposure` property for all positions in the grouping and returns the sum.
 
-A calculation may also be a count of the number of groups in a grouping. For example, a *count* on `Portfolio grouped by Country` returns the total number of `Country` groups, while a count on `Portfolio grouped by Country grouped by Sector` returns the total number of `Sector` groups. Thus, a count performed on the grouping in [@fig:grouping_country] returns $3$, and it returns $5$ for the grouping in [@fig:grouping_issuer]. 
+A calculation may also be a count of the number of groups in a grouping. For example, a *count* on `Portfolio grouped by Country` returns the total number of `Country` groups, while a count on `Portfolio grouped by Country grouped by Sector` returns the total number of `Sector` groups. Thus, a count performed on the grouping in [@fig:grouping_country] returns $3$, and it returns $5$ for the grouping in [@fig:grouping_issuer].
 
 Lastly, a relative comparison between two of the above can be performed, resulting in the relative size of the left argument to the right argument in percent. For example, comparing the two constants $7$ and $10$ — using the concrete syntax `7 relative to 10` — returns $70\%$.
 
@@ -147,51 +147,52 @@ Groupings can be iterated over. Iterating over e.g. `Portfolio grouped by Countr
 
 A rule requirement is preceded by the `require` keyword, followed by an expression that must be true.
 
-*If*-statements work as in any other language. **Spørgsmål til Peter:** bør jeg uddybe *if*-statements? 
+*If*-statements work as in any other language. **Spørgsmål til Peter:** bør jeg uddybe *if*-statements?
 
 ### Concrete syntax
 
-The constructs of the language can thus be divided into two different kinds: **1)** expressions (*grouping*, *calculation*, and *comparison*) which evaluate to a value; and **2)** statements (`require`, `forall`, `if`) which *do not* evaluate to a value, but rather take values/expressions as input.
+The constructs of the language can thus be divided into two kinds: **1)** expressions (*grouping*, *calculation*, and *comparison*) which evaluate to a value; and **2)** statements (`require`, `forall`, `if`) which *do not* evaluate to a value, but rather take values/expressions as input.
 
 #### Expressions
 
 Test blah blah. Table:
 
+\begin{footnotesize}
 \begin{center}
-    \begin{tabular}{ | l p{5cm} l l l | }
+   \begin{tabular}{ | l l l | }
       \hline
-      \textbf{Expression} & \textbf{Meaning} & \textbf{Assoc.} & \textbf{Argument(s)} & \textbf{Result} \\
-      \hline
-      \textit{literal}            & A \textit{string}, \textit{number}, \textit{boolean}, \textit{percentage}, or \textit{field name}  &  &  &  \\
-      \textit{variable}           & A variable name                                                 &  &  &  \\
-      \hline
-      \texttt{e1 grouped by e2} & Group by field name                                             & left  & Grouping, FieldName & Grouping  \\
-      \texttt{e1 where e2}      & Filter grouping  & left & Grouping, Comparison & Grouping    \\
-      \hline
-      \texttt{e1 of e2}         & \textit{map} each position into a field value  &  none  &  FieldName, Grouping  &  MappedGrouping    \\
-      \hline
-      \texttt{count e}         & Count the number of groups  &    &  Grouping  &  \textit{number}    \\
-      \texttt{sum e}           & Sum over field values  &    &  MappedGrouping  &  \textit{number}    \\
-      \texttt{average e}       & Average over field values  &    &  MappedGrouping (\textit{number})  &  \textit{number}    \\
-      \texttt{minimum e}       & Maximum of field values  &    &  MappedGrouping (\textit{number})  &  \textit{number}    \\
-      \texttt{maximum e}       & Minimum of field values  &    &  MappedGrouping (\textit{number})  &  \textit{number}    \\
-      \hline
-      \texttt{e1 relative to e2}       & Relative comparison  & left   &  MappedGrouping (\textit{number})  &  \textit{numeric}    \\
-      \hline
-      \texttt{e1 > e2}       & Greater than                & none   &  \textit{numeric}  &  boolean    \\      
-      \texttt{e1 < e2}       & Less than                   & none   &  \textit{numeric}  &  boolean    \\   
-      \texttt{e1 >= e2}       & Greater than or equal      & none   &  \textit{numeric}  &  boolean    \\   
-      \texttt{e1 <= e2}       & Less than or equal         & none   &  \textit{numeric}  &  boolean    \\   
-      \hline
-      \texttt{e1 == e2}       & Equal      & none   &  \textit{compatible}  &  boolean    \\      
-      \texttt{e1 != e2}       & Not equal  & none   &  \textit{compatible}  &  boolean    \\      
-      \hline
-      
-\end{tabular}
+​      \textbf{Expression}        & \textbf{Meaning} & \textbf{Associativity} \\
+​      \hline
+​      \textit{literal}           & A \textit{string}, \textit{number}, \textit{boolean}, \textit{percentage}, or \textit{field name}  &       \\
+​      \textit{variable}          & A variable name                                                                                    &       \\
+​      \hline
+​      \texttt{e1 grouped by e2}  & Add a group to a grouping                                                                                & left  \\
+​      \texttt{e1 where e2}       & Filter a grouping                                                                                    & left  \\
+​      \hline
+​      \texttt{e1 of e2}          & \textit{map} each position in a grouping into a field value                                                             & none  \\
+​      \hline
+​      \texttt{count e}           & Count the number of groups in a grouping   &        \\
+​      \texttt{sum e}             & \textit{Sum} of field values in a grouping        &        \\
+​      \texttt{average e}         & \textit{Average} of field values in a grouping    &        \\
+​      \texttt{minimum e}         & \textit{Maximum} of field values in a grouping      &        \\
+​      \texttt{maximum e}         & \textit{Minimum} of field values in a grouping      &        \\
+​      \hline
+​      \texttt{e1 relative to e2} & Relative comparison          & left    \\
+​      \hline
+​      \texttt{e1 > e2}           & Greater than                 & none    \\
+​      \texttt{e1 < e2}           & Less than                    & none    \\
+​      \texttt{e1 >= e2}          & Greater than or equal        & none    \\
+​      \texttt{e1 <= e2}          & Less than or equal           & none    \\
+​      \hline
+​      \texttt{e1 == e2}          & Equals                        & none    \\
+​      \texttt{e1 != e2}          & Does not equal                    & none    \\
+​      \hline
+   \end{tabular}
 \end{center}
+\end{footnotesize}
 
 
-#### Statements	
+#### Statements
 
 Statements are separated by one or more newlines. A statement is one of the following: *let-binding*, *rule requirement* (`require`), *grouping iteration* (`forall`), *if-statement*, or *block statement*.
 
@@ -258,7 +259,7 @@ forall issuers {
 
 As the first two lines are identical to the previous rule, we start at line three, in which the value of an issuer (relative to the portfolio value) is bound to the variable `issuerValue`. Line number four asserts that this is less than or equal to 35% for all issuers.
 
-On line five the number of issues for the current issuer is bound to the variable `issueCount`. This variable is then used in the line below — line six — in a conditional statement that asserts that if the value of the issuer is *not* less than or equal to 30%, then the issue count must be greater than or equal to six. 
+On line five the number of issues for the current issuer is bound to the variable `issueCount`. This variable is then used in the line below — line six — in a conditional statement that asserts that if the value of the issuer is *not* less than or equal to 30%, then the issue count must be greater than or equal to six.
 
 ##### Rule III
 
@@ -303,7 +304,7 @@ forall approvedCounterparties grouped by .Counterparty {
 
 ### Rule evaluation
 
-This section describes how a portfolio compliance rule is evaluated to a boolean, with *false* meaning one or more requirements have been violated and *true* meaning no requirements have been violated. This evaluator is simplified, in order to lower complexity, and will fail in case of any of the following: 
+This section describes how a portfolio compliance rule is evaluated to a boolean, with *false* meaning one or more requirements have been violated and *true* meaning no requirements have been violated. This evaluator is simplified, in order to lower complexity, and will fail in case of any of the following:
 
 * Any form of type error, e.g.:
   * A comparison of two incompatible values: e.g. a *string* and a *number*
@@ -312,6 +313,51 @@ This section describes how a portfolio compliance rule is evaluated to a boolean
     * `count` applied to anything but a grouping
 * A reference to a variable that does not exist
 * A position that does not contain the specified field name
+
+#### Expression evaluation summary
+
+The table below summarizes the type of the input argument(s) and the result type of the prefix and infix operators described in [@TODO].
+
+\begin{footnotesize}
+\begin{center}
+   \begin{tabular}{ | l l l | }
+      \hline
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \textbf{Expression}        & \textbf{Argument type(s)}           & \textbf{Result type}         \\
+      \hline
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \texttt{e1 grouped by e2}  & \textit{position-grouping}, \textit{field name}          & \textit{position-grouping}   \\
+      \texttt{e1 where e2}       & \textit{position-grouping}, \textit{comparison}          & \textit{position-grouping}   \\
+      \hline
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \texttt{e1 of e2}          & \textit{field name}, \textit{position-grouping}          & \textit{field value-grouping}  \\
+      \hline
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \texttt{count e}           & \textit{grouping}                               & \textit{number}       \\
+      \texttt{sum e}             & \textit{number-grouping}                        & \textit{number}       \\
+      \texttt{average e}         & \textit{number-grouping}                        & \textit{number}       \\
+      \texttt{minimum e}         & \textit{number-grouping}                        & \textit{number}       \\
+      \texttt{maximum e}         & \textit{number-grouping}                        & \textit{number}       \\
+      \hline
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \texttt{e1 relative to e2} & \textit{number}, \textit{number} or \textit{percentage}, \textit{percentage}     & \textit{percentage}    \\
+      \hline
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \texttt{e1 > e2}           & \textit{number}, \textit{number} or \textit{percentage}, \textit{percentage}     & \textit{boolean}    \\
+      \texttt{e1 < e2}           & \textit{number}, \textit{number} or \textit{percentage}, \textit{percentage}     & \textit{boolean}    \\
+      \texttt{e1 >= e2}          & \textit{number}, \textit{number} or \textit{percentage}, \textit{percentage}     & \textit{boolean}    \\
+      \texttt{e1 <= e2}          & \textit{number}, \textit{number} or \textit{percentage}, \textit{percentage}     & \textit{boolean}    \\
+      \hline
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      \texttt{e1 == e2}          & \textit{string}, \textit{string}                                                 & \textit{boolean}    \\
+      \texttt{e1 != e2}          & \textit{string}, \textit{string}                                                 & \textit{boolean}    \\
+      \hline
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+   \end{tabular}
+\end{center}
+\end{footnotesize}
+
 
 #### Runtime values
 
@@ -341,7 +387,7 @@ data Tree leafLabel
 data NodeData a = NodeData (FieldName, FieldValue) a
 ```
 
-`NodeData` contains information about a particular group. It contains the *field name* of the group (e.g. *Country*) as well as the value of that field for this particular group (e.g. *"DK"*). 
+`NodeData` contains information about a particular group. It contains the *field name* of the group (e.g. *Country*) as well as the value of that field for this particular group (e.g. *"DK"*).
 
 A `Tree` value is either a:
 
@@ -384,7 +430,7 @@ Lastly, a `forall` iteration creates in-scope variables for each grouping in the
 
 #### Grouping expression
 
-A *grouping expression* applies one or more groupings and/or filterings to an input tree. It evaluates to a new tree with either a new level of terminal nodes added to the bottom of the tree (in case of a grouping), or zero or more positions removed from the terminal nodes of the tree (in case of a filter). 
+A *grouping expression* applies one or more groupings and/or filterings to an input tree. It evaluates to a new tree with either a new level of terminal nodes added to the bottom of the tree (in case of a grouping), or zero or more positions removed from the terminal nodes of the tree (in case of a filter).
 
 ##### Grouping {#eval-grouping}
 
@@ -398,7 +444,7 @@ The leftmost tree is bound to the variable `Portfolio`. Next, the `grouped by Co
 
 A filter removes zero or more positions from each terminal node, and does not modify anything else about the tree. A comparison inside a filter operation applies to either a position or a group:
 
-* **Position comparison: **`x where (.InstrumentType != "Bond")` removes from all terminal nodes in `x` the *positions* whose `InstrumentType` property equals `"Bond"`.  
+* **Position comparison: **`x where (.InstrumentType != "Bond")` removes from all terminal nodes in `x` the *positions* whose `InstrumentType` property equals `"Bond"`.
 * **Group comparison:** `y where (sum .Value of Country < 10000000)` removes a *node* (group) from the *Country*-level of the tree if the sum of the `Value` field for all positions below this node is less than 10 million.
 
 Thus, a position comparison evaluates to a boolean for each *position* (in a group), while a group comparison evaluates to a boolean for each *group*. As described above, when a position comparison is used as a filter condition (`where`) in a grouping expression, the positions for which the expression evaluates to **false** are removed, while the rest are kept. However, when used in either a rule (`require`) or the right-hand side of a let binding, a "for all" is implicit in a position comparison. Thus, e.g. `let a = .InstrumentType == "Bond"` evaluates to true only if the `InstrumentType` property equals `"Bond"` for all positions in the group with the innermost scope (**TODO: see scope definition**).
@@ -428,7 +474,7 @@ In practice, this means that the evaluator needs to create one variable environm
 
 ![Tree with variable environments as leaf nodes](./figurer/eval-forall-env.png){#fig:eval-forall-env}
 
-This variable environment is merged with the existing variable environment (for the code block that contains the `forall`), such that variable names in the existing variable environment are overwritten in case of duplicate variable names. Also, the binding of the *Portfolio* variable to the tree starting at the root node is not included in the environment, since this is already defined in the existing variable environment. ~~Note, however, that if this were the case it would make no difference, as the effect would be to overwrite~~ 
+This variable environment is merged with the existing variable environment (for the code block that contains the `forall`), such that variable names in the existing variable environment are overwritten in case of duplicate variable names. Also, the binding of the *Portfolio* variable to the tree starting at the root node is not included in the environment, since this is already defined in the existing variable environment. ~~Note, however, that if this were the case it would make no difference, as the effect would be to overwrite~~
 
 
 
@@ -453,7 +499,7 @@ data Literal
     = Percent Number
     | FieldName Text
     | FieldValue FieldValue
-    
+
 data FieldValue
     = Number Double
     | String Text
@@ -475,7 +521,7 @@ A *value expression* (`ValueExpr`) represents either:
 
 * a count on a group (`count` keyword)
 * a combined fold and map on a group (e.g. `sum .Value of …`)
-* a relative comparison between two value expressions (separated by the `relative to` keyword) 
+* a relative comparison between two value expressions (separated by the `relative to` keyword)
 
 For example, the concrete syntax `sum .Value of Country relative to Portfolio` —  the value of the group *Country* relative to the value of the portfolio — is represented as `Relative (Expr (FoldMap Sum (Expr ".Value") (Var "Country"))) (Expr (FoldMap Sum (Expr ".Value") (Var "Portfolio")))` in abstract syntax. The abstract syntax is thus a bit more verbose in some cases, with the benefit of allowing more complex relative comparisons (e.g. `average .Exposure of Issuer relative to .Value of Country`).
 
@@ -484,7 +530,7 @@ data ValueExpr
     = GroupCount (VarOr DataExpr)
     | FoldMap Fold (VarOr FieldName) (VarOr DataExpr)
     | Relative (VarOr ValueExpr) (VarOr ValueExpr)
-    
+
 data Fold
     = Sum
     | Average
@@ -503,7 +549,7 @@ data BoolExpr
     | And (VarOr BoolExpr) (VarOr BoolExpr)
     | Or (VarOr BoolExpr) (VarOr BoolExpr)
     | Not (VarOr BoolExpr)
-    
+
 data BoolCompare
     = Eq   -- equals
     | NEq  -- does not equal
