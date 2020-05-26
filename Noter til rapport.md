@@ -27,7 +27,7 @@ for Country in Portfolio:
 
 Max complexity: $O((count_{position})^{nestingLevel})$
 
-## `group by`/`for all` equivalence
+## `where <x>`/`for all { if <x> }` equivalence
 
 Consider that the following two expressions are equivalent. An `if` in a `for all` becomes a `where` in a `group by`:
 
@@ -60,10 +60,6 @@ for Country:
 ```
 
 Max complexity: $O((count_{position})*{nestingLevel})$
-
-## Sub-rules
-
-A single rule comprising two sub-rules will become two `RuleExpr`.
 
 ## *Position* versus *group* comparisons
 

@@ -1,21 +1,54 @@
+# Bugs/code
 
-# Bugs
+4. ~~`forall`: don't overwrite `Portfolio` with grouped tree~~
+5. ~~Remove empty nodes from tree after filter~~
 
-1. ~~Fix parsing of keyword-prefixed non-keyword (e.g. "**count**erparty")~~
-2. ~~Fix AND/OR precedence~~
-   1. ~~`Control.Monad.Combinators.Expr`~~
-3. Apply "for all" to position comparisons in `require` and `let`
-4. Remove empty nodes from tree after filter
+# Report (mandatory)
 
-# Optional
+* *Double-check*
+    * Does all `.color` expressions in the report parse correctly?
+      * `cat chapters/*.md | egrep -o '``.*``{.color}'`
+    * ~~Consistently use either "property" or "field" name/value~~
+* **Implementation**
 
-1. Scan rapport igennem for udtryk der bør defineres/forklares i Background
+    * **Notes**
+      * Potential grammar ambiguity using `parser-combinators`? Or non-ambiguous?
 
-# Add-ons
+    * Abstract syntax
+        * ~~Mention: Field is a synonym for property, e.g. `FieldValue` refers to a property value~~
 
-1. Convert Haskell AST to UML class diagram
+* **Language specification**
+    * Concrete syntax
+        * `where` high precedence:
+            * Mandatory parenthesis around `where` condition
+        * ~~Make sure filter semantics are properly defined: `boolExpr` evaluated in a particular *environment* and TermNode position removed if result is `false`~~
+            * ~~**NB:** This *environment* is the same as that of a `forall`-statement~~
+    * Example rules
+        * Consistently use either `relative to Portfolio` or `let portfolioValue = sum .Value of Portfolio`
+* **Future work**
+    * IDE features
+        * Tooltip, e.g. what is "DirtyValue" property or "GICS Sector"?
+        * Auto-complete
+        * Suggestions
+* *Layout/Pandoc/Latex*
+  * `lstlistings`: prevent line break between `.` and field name
+  * Inline code highlight/background color
 
-# ~~Abandoned~~
+# Report (optional)
 
-~~Use Latex "chapters" to avoid deeply nested sections?~~
+* **NEW: Discussion**
+  * ~~`Forall` as part of `BoolExpr`~~
+  * ~~`forall`: bring into scope *value* of current group, e.g. `Country.Country = "DK"`~~
+    * ~~**NB: the reason that Rule IV & V must be implemented using `where` instead of `if`**~~
+
+**Implementation**
+
+* Abstract syntax
+  * If it weren't for `parser-combinators` I wouldn't allow e.g. `Expr` as argument to `And` (but rather only allow `BoolExpr`)
+  * Table summarizing the connection between the concrete syntax in "Rule evaluation" and the corresponding abstract syntax, e.g.:
+
+**Language specification**
+
+* Evaluation
+  * Correct environment arrow in figure `fig:eval-forall-env`
 

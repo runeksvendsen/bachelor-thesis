@@ -244,6 +244,10 @@ $if(verbatim-in-note)$
 \usepackage{fancyvrb}
 $endif$
 \usepackage{xcolor}
+
+% for abstract
+\usepackage{pdfpages}
+
 \definecolor{default-linkcolor}{HTML}{A50000}
 \definecolor{default-filecolor}{HTML}{A50000}
 \definecolor{default-citecolor}{HTML}{4077C0}
@@ -313,6 +317,9 @@ $if(listings)$
 \newcommand{\passthrough}[1]{#1}
 \lstset{defaultdialect=[5.3]Lua}
 \lstset{defaultdialect=[x86masm]Assembler}
+\lstset{keepspaces=true}   % https://tex.stackexchange.com/a/345203/213815
+\lstset{breakatwhitespace}   % https://tex.stackexchange.com/a/64782/213815
+\lstset{breakindent=30pt}
 $endif$
 $if(listings-no-page-break)$
 \usepackage{etoolbox}
@@ -339,7 +346,7 @@ $endif$
 $if(tables)$
 \usepackage{longtable,booktabs}
 $if(beamer)$
-\usepackage{caption}
+\usepackage[justification=centering]{caption}
 % Make caption package work with longtable
 \makeatletter
 \def\fnum@table{\tablename~\thetable}
@@ -410,6 +417,8 @@ $endif$
 % The option H means 'PUT IT HERE' (as  opposed to the standard h option which means 'You may put it here if you like').
 \usepackage{float}
 \floatplacement{figure}{$if(float-placement-figure)$$float-placement-figure$$else$H$endif$}
+\restylefloat{table}  % https://stackoverflow.com/a/1674386/700597
+
 
 $for(header-includes)$
 $header-includes$
@@ -583,6 +592,9 @@ $endif$
 \renewenvironment{quote}{\begin{customblockquote}\list{}{\rightmargin=0em\leftmargin=0em}%
 \item\relax\color{blockquote-text}\ignorespaces}{\unskip\unskip\endlist\end{customblockquote}}
 
+% tables: multi row stuff
+\usepackage{multirow}
+
 %
 % Source Sans Pro as the de­fault font fam­ily
 % Source Code Pro for monospace text
@@ -710,8 +722,81 @@ $if(listings)$
 \definecolor{listing-string}{HTML}{00999A}
 \definecolor{listing-comment}{HTML}{8E8E8E}
 
-\lstdefinestyle{eisvogel_listing_style}{
-  language         = java,
+
+%%%%%%%%
+\lstdefinelanguage{color}{
+  morekeywords={
+    let,forall,if,require,count,of,relative,to,
+    sum,average,minimum,maximum,where,grouped,by,
+    NOT,AND,OR,true,false
+  },
+  sensitive,
+}
+
+\lstdefinestyle{color}{
+  language         = color,
+$if(listings-disable-line-numbers)$
+  xleftmargin      = 0.6em,
+  framexleftmargin = 0.4em,
+$else$
+  numbers          = left,
+  xleftmargin      = 2.7em,
+  framexleftmargin = 2.5em,
+$endif$
+  backgroundcolor  = none,
+  basicstyle       = \color{listing-rule},
+  breaklines       = true,
+  frame            = single,
+  framesep         = 0.19em,
+  rulecolor        = \color{listing-rule},
+  frameround       = ffff,
+  tabsize          = 4,
+  numberstyle      = \color{listing-rule},
+  aboveskip        = 1.0em,
+  belowskip        = 0.1em,
+  abovecaptionskip = 0em,
+  belowcaptionskip = 1.0em,
+  keywordstyle     = {\color{listing-keyword}\bfseries},
+  keywordstyle     = {[2]\color{listing-keyword-2}\bfseries},
+  keywordstyle     = {[3]\color{listing-keyword-3}\bfseries\itshape},
+  sensitive        = true,
+  identifierstyle  = \color{listing-identifier},
+  commentstyle     = \color{listing-comment},
+  stringstyle      = \color{listing-string},
+  showstringspaces = false,
+  escapeinside     = none
+  literate         = none
+}
+%%%%%%%%
+
+%% Inline code background color
+\usepackage{soul}
+\definecolor{code-highlight-color}{HTML}{ECE5DD}
+\sethlcolor{code-highlight-color}
+% \newcommand{\code}[1]{\hl{\texttt{#1}}}
+\newcommand{\code}[1]{\hl{\lstinline{#1}}}
+
+
+
+%%%
+
+
+\lstdefinelanguage{rulelang}{
+  morekeywords={
+    let,forall,if,require,count,of,relative,to,
+    sum,average,minimum,maximum,where,grouped,by,
+    NOT,AND,OR,true,false
+  },
+  sensitive,
+  morecomment  = [l]//,
+  morecomment  = [s]{/*}{*/},
+  morecomment  = [s]{/**}{*/},
+  morestring   = [b]",
+  morestring   = [b]',
+}
+
+\lstdefinestyle{rulelang}{
+  language         = rulelang,
 $if(listings-disable-line-numbers)$
   xleftmargin      = 0.6em,
   framexleftmargin = 0.4em,
@@ -758,24 +843,7 @@ $endif$
   {…}{{\ldots}}1 {≥}{{>=}}1 {≤}{{<=}}1 {„}{{\glqq}}1 {“}{{\grqq}}1
   {”}{{''}}1
 }
-\lstset{style=eisvogel_listing_style}
-
-%
-% Java (Java SE 12, 2019-06-22)
-%
-\lstdefinelanguage{Java}{
-  morekeywords={
-    let,forall,if,require,count,of,relative,to,
-    sum,average,minimum,maximum,where,grouped,by,
-    NOT,AND,OR,true,false
-  },
-  sensitive,
-  morecomment  = [l]//,
-  morecomment  = [s]{/*}{*/},
-  morecomment  = [s]{/**}{*/},
-  morestring   = [b]",
-  morestring   = [b]',
-}
+\lstset{style=rulelang}
 
 \lstdefinelanguage{XML}{
   morestring      = [b]",
@@ -834,6 +902,20 @@ $endif$
 % for expression tables
 \usepackage{multirow}
 
+% set inline code font size to match surrounding font size
+% source: https://tex.stackexchange.com/a/161551/213815
+\makeatletter
+\lstdefinestyle{mystyle}{
+  basicstyle=%
+    \ttfamily
+    \lst@ifdisplaystyle\footnotesize\fi
+}
+\makeatother
+\lstset{style=mystyle}
+
+% used to create centered "x" inside table cell
+\newcommand{\X}{\multicolumn{1}{c|}{x}}
+
 \begin{document}
 
 %%
@@ -890,6 +972,8 @@ $else$
   $endif$
   \vskip 2em
   \noindent {\Large \textsf{$for(author)$$author$$sep$, $endfor$}}
+  \newline
+  \noindent {\large \textsf{runs@itu.dk}}
   \vfill
 }
 $endif$
@@ -902,6 +986,11 @@ $endif$
 $if(titlepage-background)$
 $else$
 \textsf{$date$}
+\vfill
+\noindent {\footnotesize \textsf{ITU project title: \textit{Portfolio compliance DSL}}}
+\newline
+\noindent {\footnotesize \textsf{ITU class code: \textit{5354738-Spring 2020}}}
+
 $endif$
 \end{flushleft}
 \end{titlepage}
@@ -916,15 +1005,23 @@ $endif$
 $if(has-frontmatter)$
 \frontmatter
 $endif$
+
 $if(title)$
-$if(beamer)$
-\frame{\titlepage}
-$endif$
-$if(abstract)$
-\begin{abstract}
-$abstract$
-\end{abstract}
-$endif$
+  $if(beamer)$
+  \frame{\titlepage}
+  $endif$
+
+  % ABSTRACT
+  \newgeometry{left=0pt,right=0pt,top=0pt,bottom=0pt,nofoot}
+  \includepdf{BSc_Abstract.pdf}
+  \restoregeometry
+
+
+  % PREFACE
+  \newgeometry{left=0pt,right=0pt,top=0pt,bottom=0pt,nofoot}
+  \includepdf{BSc_Preface.pdf}
+  \restoregeometry
+
 $endif$
 
 $if(first-chapter)$
